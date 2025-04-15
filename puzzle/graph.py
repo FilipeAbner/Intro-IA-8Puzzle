@@ -10,7 +10,6 @@ class Grafo:
     # Expande o nó gerando seus filhos
     def expandir_no(self, no: No):
         for a in no.acoes_possiveis:
-            print("Ação Realizada: ", a) 
             # Cria o filho de acordo com as ações possíveis
             filho = no.mover(a)
             filho.acao_realizada = a

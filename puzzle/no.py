@@ -16,16 +16,16 @@ CUSTO_ACAO = {
 }
 
 class No:
-    def __init__(self, state: List[List[int]], pai: Optional['No'] = None, custo: int = 1):
+    def __init__(self, state: List[List[int]], pai: Optional['No'] = None, custo: int = 1, acao_realizada: Optional[Acao] = None):
         self.state = copy.deepcopy(state)
         self.pai = pai
         self.acoes_possiveis = self.movimentos_possiveis()
         self.custo = custo
         self.filhos: List[No] = []
-        self.acao_realizada = Optional[Acao]
+        self.acao_realizada = acao_realizada
 
     def __str__(self):
-        return f"Ações Possíveis: {self.acoes_possiveis}, Custo: {self.custo}, Estado:\n" + \
+        return f"Ação Realizada: {self.acao_realizada}\nAções Possíveis: {self.acoes_possiveis}, Custo: {self.custo}, Estado:\n" + \
                "\n".join(str(linha) for linha in self.state)
 
     # Calcula os movimentos possíveis a partir do estado atual, se é possível mover o 0 para as laterais
@@ -79,6 +79,6 @@ class No:
             novo_estado[x][y], novo_estado[novo_x][novo_y] = novo_estado[novo_x][novo_y], novo_estado[x][y]
             # novo_custo = CUSTO_ACAO[acao]
 
-            return No(novo_estado, pai=self, acoes_possiveis=acao, custo=self.custo, acao_realizada=acao)
+            return No(novo_estado, pai=self, custo=self.custo, acao_realizada=acao)
         else:
             return None
