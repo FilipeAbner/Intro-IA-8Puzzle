@@ -15,28 +15,10 @@ class Grafo:
             saida.append("-" * 30)
         return "\n".join(saida)
 
+          
+    def generate_graph(self):
+        self.raiz.expandir_no()
+        for child in self.raiz.filhos:
+            self.nos.append(child)
+        return      
     
-    # Expande o nó gerando seus filhos
-    def expandir_no(self):
-
-        for no in self.nos:
-            # print(f"\n=========FATHER=========\n")
-            # print(no)
-            # print(f"\n=========END_FATHER=========\n")
-            for a in no.acoes_possiveis:
-                filho = no.mover(a)
-                filho.pai = no
-                
-                """se o pai tem a acao oposta do filho significa que esta retornando a um estado anterior, por exemplo:
-                [1, 2, 3]       [1, 2, 3]
-                [4, 6, 0] ->    [4, 0, 6]   
-                [7, 5, 8]       [7, 5, 8]
-                portanto nao é necessario salvar o filho
-                    """
-                if filho.pai.acao_realizada == filho.acao_realizada.oposta(): 
-                    continue
-                else:
-                    filho.acao_realizada = a
-                    no.filhos.append(filho)
-                    self.nos.append(filho)
-                    # print(filho)

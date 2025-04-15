@@ -10,7 +10,7 @@ def main():
 
     no_inicial = No(estado_inicial)
     grafo = Grafo(no_inicial)
-    grafo.expandir_no()
+    grafo.generate_graph()
         
     # print(grafo)
 

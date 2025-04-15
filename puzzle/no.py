@@ -91,4 +91,28 @@ class No:
             return No(novo_estado, pai=self, custo=self.custo, acao_realizada=acao)
         else:
             return None
+
     
+    # Expande o nó gerando seus filhos
+    def expandir_no(self) -> List['No']:
+        child: List[No] = []
+        print(f"\n=========FATHER=========\n")
+        print(self.pai)
+        print(f"\n=========END_FATHER=========\n")
+        for a in self.acoes_possiveis:
+            filho = self.mover(a)
+            filho.pai = self
+            
+            """se o pai tem a acao oposta do filho significa que esta retornando a um estado anterior, por exemplo:
+            [1, 2, 3]       [1, 2, 3]
+            [4, 6, 0] ->    [4, 0, 6]   
+            [7, 5, 8]       [7, 5, 8]
+            portanto nao é necessario salvar o filho
+                """
+            if filho.pai.acao_realizada == filho.acao_realizada.oposta(): 
+                continue
+            else:
+                filho.acao_realizada = a
+                child.append(filho)
+                print(filho)
+        return child
