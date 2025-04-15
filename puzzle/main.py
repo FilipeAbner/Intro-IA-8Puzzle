@@ -10,12 +10,9 @@ def main():
 
     no_inicial = No(estado_inicial)
     grafo = Grafo(no_inicial)
-    grafo.expandir_no(no_inicial)
-
-    print("Filhos do nó inicial:")
-    for filho in no_inicial.filhos:
-        print(filho)
-        print("-" * 30)
+    grafo.expandir_no()
+        
+    # print(grafo)
 
 if __name__ == "__main__":
     main()

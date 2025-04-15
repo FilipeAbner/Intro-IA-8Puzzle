@@ -8,6 +8,15 @@ class Acao(Enum):
     DIREITA = 3
     BAIXO = 4
 
+    def oposta(self) -> 'Acao':
+        opostos = {
+            Acao.ESQUERDA: Acao.DIREITA,
+            Acao.DIREITA: Acao.ESQUERDA,
+            Acao.CIMA: Acao.BAIXO,
+            Acao.BAIXO: Acao.CIMA
+        }
+        return opostos[self]
+
 CUSTO_ACAO = {
     Acao.ESQUERDA: 1,
     Acao.CIMA: 1,
@@ -82,3 +91,4 @@ class No:
             return No(novo_estado, pai=self, custo=self.custo, acao_realizada=acao)
         else:
             return None
+    
