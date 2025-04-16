@@ -1,28 +1,6 @@
-from enum import Enum
+from util import Acao, CUSTO_ACAO
 from typing import List, Optional
 import copy
-
-class Acao(Enum):
-    ESQUERDA = 1
-    CIMA = 2
-    DIREITA = 3
-    BAIXO = 4
-
-    def oposta(self) -> 'Acao':
-        opostos = {
-            Acao.ESQUERDA: Acao.DIREITA,
-            Acao.DIREITA: Acao.ESQUERDA,
-            Acao.CIMA: Acao.BAIXO,
-            Acao.BAIXO: Acao.CIMA
-        }
-        return opostos[self]
-
-CUSTO_ACAO = {
-    Acao.ESQUERDA: 1,
-    Acao.CIMA: 1,
-    Acao.DIREITA: 1,
-    Acao.BAIXO: 1
-}
 
 class No:
     def __init__(self, state: List[List[int]], pai: Optional['No'] = None, custo: int = 1, acao_realizada: Optional[Acao] = None):
