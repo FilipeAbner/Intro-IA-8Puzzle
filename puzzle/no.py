@@ -74,7 +74,6 @@ class No:
     ESQUERDA: Move o 0 para a esquerda
     DIREITA: Move o 0 para a direita
     Retorna uma lista de ações possíveis
-    
     """
     def mover(self, acao: Acao) -> Optional['No']:
         for i in range(3):

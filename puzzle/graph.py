@@ -15,23 +15,23 @@ class Grafo:
             saida.append(str(no))
             saida.append("-" * 30)
         return "\n".join(saida)
-
-          
+    
+    # Expande apenas para a proxima geração de filhos de um nó 
     def generate_one_depth_graph(self):
         self.raiz.expandir_no()
         for child in self.raiz.filhos:
             self.nos.append(child)
         return     
 
+    # Expande todas as gerações de filhos de um nó até encontrar um estado igual ao estado final
     def generate_graph(self, estado_final: No) -> No:
         visitados = set()
         fila = [self.raiz]
-
+        count = 0
         while fila:
             no_atual = fila.pop(0)
 
             if no_atual == estado_final:
-                print(f"ultimo no{no_atual}")
                 return no_atual
 
             if no_atual in visitados:
@@ -49,19 +49,22 @@ class Grafo:
             #     print(f)
             
             for filho in filhos:
+                self.nos.append(filho)
+                if filho == estado_final:
+                    return filho
                 if filho not in visitados:
-                    self.nos.append(filho)
                     fila.append(filho)
 
         return None
 
     def refazer_caminho(self, ultimo_estado: No):
         caminho: List[No] = []
-
+        total_passos = 0
         # Reconstroi o caminho do final até a raiz
         while ultimo_estado is not None:
             caminho.append(ultimo_estado)
             ultimo_estado = ultimo_estado.pai
+            total_passos+=1
 
         # Inverte o caminho para ir da raiz até o final
         for node in reversed(caminho):
@@ -69,15 +72,6 @@ class Grafo:
             print(node)
             print("-" * 40)        
 
-    # def refazer_caminho(ultimo_estado: No):
-    #     caminho : List[No] = []
-    #     caminho.append(ultimo_estado)
-
-    #     while ultimo_estado.pai != None:
-    #         caminho.append(copy(ultimo_estado.pai))
-    #         ultimo_estado = ultimo_estado.pai
-
-    #     for node in reverse(caminho):
-    #         print(node)
-
+        # Imprime o total de passos removendo o estado_inicial
+        print(total_passos-1)
        
