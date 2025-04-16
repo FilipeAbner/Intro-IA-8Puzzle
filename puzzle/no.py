@@ -37,6 +37,17 @@ class No:
         return f"Ação Realizada: {self.acao_realizada}\nAções Possíveis: {self.acoes_possiveis}, Custo: {self.custo}, Estado:\n" + \
                "\n".join(str(linha) for linha in self.state)
 
+    def __eq__(self, other):
+        if isinstance(other, No):
+            return self.state == other.state \
+                    # and self.custo == other.custo
+        return False
+
+    def __hash__(self):
+        # Converte para que seja hashable para uso no set
+        return hash(tuple(tuple(linha) for linha in self.state))
+
+
     # Calcula os movimentos possíveis a partir do estado atual, se é possível mover o 0 para as laterais
     def movimentos_possiveis(self) -> List[Acao]:
         for i in range(3):
@@ -96,9 +107,7 @@ class No:
     # Expande o nó gerando seus filhos
     def expandir_no(self) -> List['No']:
         child: List[No] = []
-        print(f"\n=========FATHER=========\n")
-        print(self.pai)
-        print(f"\n=========END_FATHER=========\n")
+
         for a in self.acoes_possiveis:
             filho = self.mover(a)
             filho.pai = self
@@ -114,5 +123,5 @@ class No:
             else:
                 filho.acao_realizada = a
                 child.append(filho)
-                print(filho)
+
         return child
