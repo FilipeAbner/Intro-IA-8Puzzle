@@ -8,7 +8,9 @@ class No:
         self.pai = pai
         self.acoes_possiveis = self.movimentos_possiveis()
         self.objetivo = objetivo
-        self.custo = self.distancia_manhattan()
+        self.g = pai.g + 1 if pai else 0  # custo acumulado do caminho
+        self.h = self.distancia_manhattan()  # heurística
+        self.custo = self.g + self.h            # f(n) = g(n) + h(n)
         self.filhos: List[No] = []
         self.acao_realizada = acao_realizada
 
@@ -26,6 +28,8 @@ class No:
         # Converte para que seja hashable para uso no set
         return hash(tuple(tuple(linha) for linha in self.state))
 
+    def __lt__(self, other):
+        return False  # necessário pro heapq não quebrar
 
     # Calcula os movimentos possíveis a partir do estado atual, se é possível mover o 0 para as laterais
     def movimentos_possiveis(self) -> List[Acao]:
@@ -118,6 +122,3 @@ class No:
                             break
         return distancia
     
-
-    def __lt__(self, other):
-        return False  # Arbitrário, apenas necessário pro heapq não quebrar , sendo sincero eu não entendi o pq disso

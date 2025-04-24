@@ -34,14 +34,51 @@ class Grafo:
         return     
 
     # Expande todas as gerações de filhos de um nó até encontrar um estado igual ao estado final
+    # def generate_graph(self) -> No:
+    #     visitados = set()
+    #     fila = [self.raiz]
+
+    #     while fila:
+    #         no_atual = fila.pop(0)
+
+    #         if no_atual == self.raiz.objetivo:
+    #             return no_atual
+
+    #         if no_atual in visitados:
+    #             continue
+
+    #         visitados.add(no_atual)
+
+    #         # print(f"\n=========FATHER=========\n")
+    #         # print(no_atual.state)
+    #         # print(f"\n=========END_FATHER=========\n")
+
+    #         filhos = no_atual.expandir_no()
+
+    #         for f in filhos:
+    #             print(f)
+            
+    #         for filho in filhos:
+    #             self.nos.append(filho)
+    #             if filho.state == self.raiz.objetivo:
+    #                 return filho
+    #             if filho not in visitados:
+    #                 fila.append(filho)
+
+    #     return None
+
+    # # Expande todas as gerações de filhos de um nó até encontrar um estado igual ao estado final
     def generate_graph(self) -> No:
         visitados = set()
-        fila = [self.raiz]
+        heap = []
+    
+        # Inserindo o nó raiz com a heurística inicial
+        heapq.heappush(heap, (self.raiz.custo, self.raiz))
 
-        while fila:
-            no_atual = fila.pop(0)
+        while heap:
+            _, no_atual = heapq.heappop(heap)
 
-            if no_atual == self.raiz.objetivo:
+            if no_atual.state == self.raiz.objetivo:
                 return no_atual
 
             if no_atual in visitados:
@@ -49,24 +86,16 @@ class Grafo:
 
             visitados.add(no_atual)
 
-            # print(f"\n=========FATHER=========\n")
-            # print(no_atual.state)
-            # print(f"\n=========END_FATHER=========\n")
-
             filhos = no_atual.expandir_no()
 
-            for f in filhos:
-                print(f)
-            
             for filho in filhos:
-                self.nos.append(filho)
-                if filho.state == self.raiz.objetivo:
-                    return filho
                 if filho not in visitados:
-                    fila.append(filho)
+                    heuristica = filho.custo
+                    heapq.heappush(heap, (heuristica, filho))
+                    self.nos.append(filho)
 
         return None
-
+    
     def refazer_caminho(self, ultimo_estado: No):
         caminho: List[No] = []
         total_passos = 0
