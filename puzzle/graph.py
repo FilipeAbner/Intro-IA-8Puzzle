@@ -1,6 +1,7 @@
 from typing import List
 from no import No
 import copy
+import heapq
 
 class Grafo:
     def __init__(self, raiz: No):
@@ -21,17 +22,26 @@ class Grafo:
         self.raiz.expandir_no()
         for child in self.raiz.filhos:
             self.nos.append(child)
+
+        print(f"\n=========FATHER=========\n")
+        print(self.raiz)
+        print(f"\n=========END_FATHER=========\n")
+
+        for f in self.raiz.filhos:
+            print(f)
+            print(f"END CHILD \n")
+            
         return     
 
     # Expande todas as gerações de filhos de um nó até encontrar um estado igual ao estado final
-    def generate_graph(self, estado_final: No) -> No:
+    def generate_graph(self) -> No:
         visitados = set()
         fila = [self.raiz]
-        count = 0
+
         while fila:
             no_atual = fila.pop(0)
 
-            if no_atual == estado_final:
+            if no_atual == self.raiz.objetivo:
                 return no_atual
 
             if no_atual in visitados:
@@ -40,17 +50,17 @@ class Grafo:
             visitados.add(no_atual)
 
             # print(f"\n=========FATHER=========\n")
-            # print(no_atual)
+            # print(no_atual.state)
             # print(f"\n=========END_FATHER=========\n")
 
             filhos = no_atual.expandir_no()
 
-            # for f in filhos:
-            #     print(f)
+            for f in filhos:
+                print(f)
             
             for filho in filhos:
                 self.nos.append(filho)
-                if filho == estado_final:
+                if filho.state == self.raiz.objetivo:
                     return filho
                 if filho not in visitados:
                     fila.append(filho)

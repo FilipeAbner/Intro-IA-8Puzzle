@@ -3,11 +3,12 @@ from typing import List, Optional
 import copy
 
 class No:
-    def __init__(self, state: List[List[int]], pai: Optional['No'] = None, custo: int = 1, acao_realizada: Optional[Acao] = None):
+    def __init__(self, state: List[List[int]], objetivo: List[List[int]], pai: Optional['No'] = None, custo: int = 1, acao_realizada: Optional[Acao] = None):
         self.state = copy.deepcopy(state)
         self.pai = pai
         self.acoes_possiveis = self.movimentos_possiveis()
-        self.custo = custo
+        self.objetivo = objetivo
+        self.custo = self.distancia_manhattan()
         self.filhos: List[No] = []
         self.acao_realizada = acao_realizada
 
@@ -75,8 +76,7 @@ class No:
             novo_estado = copy.deepcopy(self.state)
             novo_estado[x][y], novo_estado[novo_x][novo_y] = novo_estado[novo_x][novo_y], novo_estado[x][y]
             # novo_custo = CUSTO_ACAO[acao]
-
-            return No(novo_estado, pai=self, custo=self.custo, acao_realizada=acao)
+            return No(novo_estado, objetivo=self.objetivo, pai=self, acao_realizada=acao)
         else:
             return None
 
@@ -87,8 +87,7 @@ class No:
 
         for a in self.acoes_possiveis:
             filho = self.mover(a)
-            filho.pai = self
-            
+            # print(filho)
             """se o pai tem a acao oposta do filho significa que esta retornando a um estado anterior, por exemplo:
             [1, 2, 3]       [1, 2, 3]
             [4, 6, 0] ->    [4, 0, 6]   
@@ -100,5 +99,25 @@ class No:
             else:
                 filho.acao_realizada = a
                 child.append(filho)
+                self.filhos.append(filho)
 
         return child
+    
+    # heuristica a ser usada
+    def distancia_manhattan(self) -> int:
+        distancia = 0
+        for i in range(3):
+            for j in range(3):
+                valor = self.state[i][j]
+                if valor == 0:
+                    continue
+                for x in range(3):
+                    for y in range(3):
+                        if self.objetivo[x][y] == valor:
+                            distancia += abs(x - i) + abs(y - j)
+                            break
+        return distancia
+    
+
+    def __lt__(self, other):
+        return False  # Arbitrário, apenas necessário pro heapq não quebrar , sendo sincero eu não entendi o pq disso

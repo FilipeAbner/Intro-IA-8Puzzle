@@ -3,20 +3,22 @@ from graph import Grafo
 
 def main():
 
-    estado_inicial = No([
+    estado_inicial = [
         [1, 2, 6],
         [7, 3, 0],
         [4, 5, 8]
-    ])
+    ]
 
-    estado_final = No([
+    estado_final = [
         [1, 2, 3],
         [4, 5, 6],
         [7, 8, 0]
-    ])
+    ]
 
-    grafo = Grafo(estado_inicial)
-    ultimo_estado = grafo.generate_graph(estado_final)
+    raiz = No(estado_inicial,estado_final)
+    grafo = Grafo(raiz)
+    ultimo_estado = grafo.generate_graph()
+
     if ultimo_estado:
         grafo.refazer_caminho(ultimo_estado)
     else:
